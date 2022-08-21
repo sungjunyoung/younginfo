@@ -1,0 +1,330 @@
+##################################################################################################
+# Details service
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: details
+  labels:
+    app: details
+    service: details
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: details
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: younginfo-details
+  labels:
+    account: details
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: details-v1
+  labels:
+    app: details
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: details
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: details
+        version: v1
+    spec:
+      serviceAccountName: younginfo-details
+      containers:
+        - name: details
+          image: details
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
+          env:
+            - name: VERSION
+              value: v1
+---
+##################################################################################################
+# Ratings service
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: ratings
+  labels:
+    app: ratings
+    service: ratings
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: ratings
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: younginfo-ratings
+  labels:
+    account: ratings
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ratings-v1
+  labels:
+    app: ratings
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ratings
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: ratings
+        version: v1
+    spec:
+      serviceAccountName: younginfo-ratings
+      containers:
+        - name: ratings
+          image: ratings
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
+          securityContext:
+            runAsUser: 1000
+          env:
+            - name: VERSION
+              value: v1
+---
+##################################################################################################
+# Reviews service
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: reviews
+  labels:
+    app: reviews
+    service: reviews
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: reviews
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: younginfo-reviews
+  labels:
+    account: reviews
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews-v1
+  labels:
+    app: reviews
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: reviews
+        version: v1
+    spec:
+      serviceAccountName: younginfo-reviews
+      containers:
+        - name: reviews
+          image: reviews
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: LOG_DIR
+              value: "/tmp/logs"
+            - name: VERSION
+              value: v1
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: wlp-output
+              mountPath: /opt/ibm/wlp/output
+          securityContext:
+            runAsUser: 1000
+      volumes:
+        - name: wlp-output
+          emptyDir: { }
+        - name: tmp
+          emptyDir: { }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews-v2
+  labels:
+    app: reviews
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: reviews
+        version: v2
+    spec:
+      serviceAccountName: younginfo-reviews
+      containers:
+        - name: reviews
+          image: reviews
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: LOG_DIR
+              value: "/tmp/logs"
+            - name: VERSION
+              value: v2
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: wlp-output
+              mountPath: /opt/ibm/wlp/output
+          securityContext:
+            runAsUser: 1000
+      volumes:
+        - name: wlp-output
+          emptyDir: { }
+        - name: tmp
+          emptyDir: { }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews-v3
+  labels:
+    app: reviews
+    version: v3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+      version: v3
+  template:
+    metadata:
+      labels:
+        app: reviews
+        version: v3
+    spec:
+      serviceAccountName: younginfo-reviews
+      containers:
+        - name: reviews
+          image: reviews
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: LOG_DIR
+              value: "/tmp/logs"
+            - name: VERSION
+              value: v3
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: wlp-output
+              mountPath: /opt/ibm/wlp/output
+          securityContext:
+            runAsUser: 1000
+      volumes:
+        - name: wlp-output
+          emptyDir: { }
+        - name: tmp
+          emptyDir: { }
+---
+##################################################################################################
+# mypage services
+##################################################################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: mypage
+  labels:
+    app: mypage
+    service: mypage
+spec:
+  ports:
+    - port: 9080
+      name: http
+  selector:
+    app: mypage
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: younginfo-mypage
+  labels:
+    account: mypage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mypage-v1
+  labels:
+    app: mypage
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mypage
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: mypage
+        version: v1
+    spec:
+      serviceAccountName: younginfo-mypage
+      containers:
+        - name: mypage
+          image: mypage
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9080
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            runAsUser: 1000
+          env:
+            - name: VERSION
+              value: v1
+      volumes:
+        - name: tmp
+          emptyDir: { }
+---

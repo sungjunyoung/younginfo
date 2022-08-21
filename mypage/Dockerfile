@@ -11,7 +11,7 @@ RUN go build -o /mypage
 ## Deploy
 ##
 FROM alpine:3.15.4
-RUN apk add bash
+RUN apk add bash curl
 COPY --from=build /mypage /mypage
 RUN chmod +x /mypage
 CMD ["/mypage"]
